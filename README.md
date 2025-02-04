@@ -13,6 +13,9 @@ React Native, a popular framework developed by Facebook, allows for the developm
 
 The project, named "Mental Health Assurance," aims to provide a comprehensive mental health support system. By combining these cutting-edge technologies, the platform will offer features such as real-time chat with mental health professionals, mood tracking, personalized content, and community support. This innovative solution seeks to make mental health care more accessible, personalized, and effective, addressing the urgent need for mental health support in the digital age.
 
+## Project Slideshow
+
+[![View Project Slideshow](https://img.shields.io/badge/View-Project%20Slideshow-blue?style=for-the-badge&logo=canva)](https://www.canva.com/design/DAGXdvBK3Es/wy1tyS3i5K21QUcNoW6_oQ/edit?utm_content=DAGXdvBK3Es&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
 ## Features
 1. AI Chatbot Support System
@@ -58,10 +61,6 @@ Emergency markers for identifying 24/7 mental health support centers.
    - Enable profile features such as mood tracking history, appointment records, and activity logs.
    - Ensure robust data protection and privacy controls for all user profiles.
 
-
-## Project Slideshow
-
-[![View Project Slideshow](https://img.shields.io/badge/View-Project%20Slideshow-blue?style=for-the-badge&logo=canva)](https://www.canva.com/design/DAGXdvBK3Es/wy1tyS3i5K21QUcNoW6_oQ/edit?utm_content=DAGXdvBK3Es&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
 
 ## Installation
