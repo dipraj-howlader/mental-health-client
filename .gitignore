@@ -3,7 +3,7 @@
 node_modules/
 .expo/
 dist/
-firebaseConfig.js
+firebaseConfig
 npm-debug.*
 *.jks
 *.p8
