@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Mental Health",
-    "slug": "mental-health-app",
+    "slug": "mental-health-assurance",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
@@ -29,8 +29,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "de1a7dcc-b1d0-4c6b-b8bb-67507a2cef82"
+        "projectId": "0fb01561-85a0-4bef-9609-85320fbd3a14"
       }
-    }
+    },
+    "owner": "dipraj10"
   }
 }

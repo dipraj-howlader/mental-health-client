@@ -1,36 +1,48 @@
-import { TouchableOpacity, StyleSheet, Button, Text, View, ImageBackground, ScrollView } from "react-native";
+import { TouchableOpacity, StyleSheet, Text, View, ImageBackground, ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React, { useState } from "react";
-import { qtn, categories } from './questions'
-import Result from "../Result/Result";
+import { qtn, categories } from './questions';  // Ensure categories contain additional advice
+import Result from "../Result/Result";  // Assume Result component is already set up to show the result details
 
 const Quiz = () => {
-
-  const getResult = async (features) => {
-    try {
-      const response = await fetch('http://13.233.2.223:5021/predict', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(features),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error:', error);
-      throw error;
-    }
-  }
-
   const [questions, setQuestions] = useState(qtn);
   const [prediction, setPrediction] = useState(null);
   const [err, setErr] = useState(null);
+
+  // Function to calculate the score and return the result
+  const calculateResult = (features) => {
+    let score = 0;
+    for (let key in features) {
+      score += features[key];  // Sum up the values from the answers (adjust this calculation if necessary)
+    }
+
+    // Determine the category based on the score
+    let result;
+    if (score < 5) {
+      result = { 
+        ...categories[0],
+        advice: "It's great that you're feeling balanced! Keep up the healthy habits.",
+        doctorVisit: "No need for a doctor visit at the moment.",
+        treatment: "Maintain your healthy lifestyle with regular physical activity and stress management."
+      };
+    } else if (score >= 5 && score < 10) {
+      result = { 
+        ...categories[1],
+        advice: "You may be dealing with some anger-related symptoms. Consider small changes to reduce stress.",
+        doctorVisit: "No immediate doctor visit required, but consider a check-up if needed.",
+        treatment: "Try anger management strategies such as mindfulness and exercise to reduce irritability."
+      };
+    } else {
+      result = { 
+        ...categories[2],
+        advice: "You seem to be dealing with both anxiety and anger. It's important to seek help and adopt healthier strategies.",
+        doctorVisit: "Consult with a healthcare professional for a full assessment and treatment plan.",
+        treatment: "Incorporate relaxation techniques, therapy, and a regular exercise routine to manage both anger and anxiety."
+      };
+    }
+
+    return result;
+  };
 
   const handleOptionPress = ({ name, value }) => {
     const updatedQuestions = questions.map((q) => {
@@ -42,49 +54,38 @@ const Quiz = () => {
     setQuestions(updatedQuestions);
   };
 
-  const handleSubmit = async() => {
-    
+  const handleSubmit = () => {
     let features = {};
     let isError = false;
-    
+
+    // Collect answers from the questions
     questions.forEach((question) => {
       if (question.selected !== null) {
         features[question.name] = question.selected;
-      }
-      else {
+      } else {
         isError = true;
         setErr(`Please select an option for the question "${question.text}"`);
       }
     });
-    
-    if (!isError) {
-      // Get result
-      let data = await getResult(features);
-      console.log(data);
-      if (data.msg === 'success') {
-        setErr(null);
-        setPrediction(categories[data.prediction]);
-      }
-      else{
-        setPrediction(null)
-        setErr('Having trouble to connect classifier model. Please try again.')
-      }
-    }
 
-    // console.log(features);
-  }
+    if (!isError) {
+      // Calculate result based on the answers
+      const result = calculateResult(features);
+      setErr(null);
+      setPrediction(result);  // Set prediction based on the calculated result
+    }
+  };
 
   const resetQuiz = () => {
-    setQuestions(qtn);
+    setQuestions(qtn);  // Reset the questions to their original state
     setPrediction(null);
     setErr(null);
-  }
+  };
 
   const QuestionCard = ({ question }) => {
     return (
       <View style={styles.card}>
         <ImageBackground source={require('../../images/result-bg.jpg')} style={styles.hospitalItem}>
-
           {/* Question */}
           <View style={styles.top}>
             <Text style={styles.question}>{question.text}</Text>
@@ -113,14 +114,39 @@ const Quiz = () => {
   return (
     <View style={styles.container}>
       {prediction ? (
-        <Result prediction={prediction} resetQuiz={resetQuiz} />
+        <ScrollView style={styles.container}>
+          <View style={styles.resultContainer}>
+            {/* Display Result */}
+            <Text style={styles.resultTitle}>{prediction.category}</Text>
+            <Text style={styles.resultDescription}>{prediction.description}</Text>
+
+            {/* Display Additional Information */}
+            <View style={styles.detailsContainer}>
+              <Text style={styles.resultTitle}>Advice:</Text>
+              <Text style={styles.resultText}>{prediction.advice}</Text>
+
+              <Text style={styles.resultTitle}>Doctor Visit:</Text>
+              <Text style={styles.resultText}>{prediction.doctorVisit}</Text>
+
+              <Text style={styles.resultTitle}>Treatment:</Text>
+              <Text style={styles.resultText}>{prediction.treatment}</Text>
+            </View>
+
+            {/* Reset Button */}
+            <TouchableOpacity
+              style={styles.submitBtn}
+              onPress={resetQuiz}
+            >
+              <Text style={styles.optionText}>Take the Quiz Again</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       ) : (
         <ScrollView style={styles.container}>
-          {
-            questions.map((question) => (
-              <QuestionCard key={question.name} question={question} />
-            ))
-          }
+          {questions.map((question) => (
+            <QuestionCard key={question.name} question={question} />
+          ))}
+
           {/* Error */}
           {err && <Text style={styles.errText}>{err}</Text>}
 
@@ -141,6 +167,8 @@ export default Quiz;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    padding: 10,
   },
   card: {
     borderRadius: 5,
@@ -152,8 +180,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     overflow: 'hidden',
   },
-  top: {
-  },
+  top: {},
   question: {
     fontSize: 22,
     color: "black",
@@ -164,10 +191,6 @@ const styles = StyleSheet.create({
   middle: {
     marginVertical: 10,
     marginHorizontal: 20,
-  },
-  options: {
-    flexDirection: "column",
-    justifyContent: "space-between",
   },
   option: {
     backgroundColor: "#FC734D",
@@ -192,7 +215,11 @@ const styles = StyleSheet.create({
   errText: {
     color: 'red',
     marginHorizontal: 10,
-    textAlign: 'center', marginTop: 10, fontWeight: 'bold', fontSize: 16, textTransform: 'capitalize'
+    textAlign: 'center',
+    marginTop: 10,
+    fontWeight: 'bold',
+    fontSize: 16,
+    textTransform: 'capitalize',
   },
   submitBtn: {
     marginHorizontal: 10,
@@ -202,4 +229,23 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 5,
   },
+  resultContainer: {
+    padding: 20,
+  },
+  resultTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  resultDescription: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  detailsContainer: {
+    marginTop: 15,
+  },
+  resultText: {
+    fontSize: 16,
+    marginBottom: 10,
+  }
 });

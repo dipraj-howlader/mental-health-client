@@ -16,6 +16,7 @@ import ReadArticle from "./pages/ReadArticle";
 import AppointmentPendingList from "./pages/AppointmentPendingList";
 import Exercise from "./pages/Exercise";
 import SmartHealth from "./pages/SmartHealth";
+import Chatbot from "./pages/Chatbot"; 
 
 
 const MyTheme = {
@@ -58,6 +59,7 @@ const App = () => {
         <Drawer.Screen name="Hospitals" component={HospitalList} />
         {/* <Drawer.Screen name="Doctor Details" component={DoctorDetails} /> */}
         {/* <Drawer.Screen name="SmartHealth" component={SmartHealth} /> */}
+        <Drawer.Screen name="Chatbot" component={Chatbot} />
         <Drawer.Screen
           name="Emergency Contact"
           component={EmergencyContactPage}

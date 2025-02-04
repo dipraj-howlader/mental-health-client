@@ -10,17 +10,17 @@ const AboutPage = () => {
       </View>
       <Text style={styles.title}>About US</Text>
       <Text style={styles.description}>
-        The APP is developed as part of a thesis titled "Development of an Anger and Anxiety Disorder Prediction Scheme using Machine Learning and Mobile Application for Mental Healthcare," our app aims to provide mental health support to those in need. It offers comprehensive guidelines, including exercises and emergency support, to assist individuals with managing their mental health effectively.
+      This app is developed as part of 6th semester's Software Development Project -2 titled "Mental Health Assurance". My app aims to provide mental health support to those in need. It offers comprehensive guidelines, including exercises and emergency support, to assist individuals with managing their mental health effectively.
       </Text>
       <Text style={{fontSize: 16, marginTop: 30, marginBottom: -10, fontWeight: 'bold'}}>Designed And Developed By:{"\n"}</Text>
       <Text style={styles.description}>
         <Text>
-          MOHAMMAD SALAH UDDIN{"\n"}
-          CSE 2017, CUET{"\n"}
+          DIPRAJ HOWLADER{"\n"}
+          ID - 1902058, PSTU{"\n"}
           Contact:{"\n"}
-          <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${'mdsalah.connect@gmail.com'}`) }}>
+          <TouchableOpacity onPress={() => { Linking.openURL(`mailto:${'dipraj17@cse.pstu.ac.bd'}`) }}>
             <Text style={{ fontSize: 16, textDecorationLine: 'underline', color: 'green' }}>
-              mdsalah.connect@gmail.com
+              dipraj17@cse.pstu.ac.bd
             </Text>
           </TouchableOpacity>
         </Text>
